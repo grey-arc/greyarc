@@ -24,7 +24,7 @@ const ContactFormSection = ({ data }) => {
   };
 
   const formSubmitIo = () => {
-    fetch("https://formsubmit.co/ajax/au9970@gmail.com", {
+    fetch("https://formsubmit.co/ajax/info@greyarc.com", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
