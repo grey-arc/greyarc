@@ -1,41 +1,93 @@
-"use client";
-
+import { notFound } from "next/navigation";
+import connectDB from "@/lib/mongoose";
+import Blog from "@/app/models/Blog";
 import BlogContent from "@/components/blog/BlogContent";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import ViewTracker from "@/components/blog/ViewTracker";
 import Footer from "@/components/home/Footer";
-import Loading from "@/components/loading/loading";
 
-export default function BlogPost({ params }) {
-  const searchParams = useSearchParams();
-  const ref = searchParams.get("ref"); // encrypted ID
-  const [blog, setBlog] = useState(null);
-  const [loading, setLoading] = useState(true);
+const SITE_URL = "https://www.greyarc.co";
 
-  useEffect(() => {
-    if (ref) {
-      fetch(`/api/blogs/${encodeURIComponent(ref)}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setBlog(data);
-        })
-        .catch((err) => console.error("Error fetching data"))
-        .then(() => setLoading(false));
-    }
-  }, [ref]);
+export const dynamic = "force-dynamic";
 
-  if (!blog) return <Loading />;
+async function getServiceBySlug(slug) {
+  await connectDB();
+  // Matches the original /api/services route's filter exactly: author
+  // only. Service records in this dataset are currently all
+  // published: false, so adding a published/active filter here would
+  // silently 404 every service page.
+  const service = await Blog.findOne({
+    slug,
+    author: "services",
+  }).lean();
+  return service;
+}
+
+export async function generateMetadata({ params }) {
+  const { service: slug } = await params;
+  const service = await getServiceBySlug(slug);
+
+  if (!service) {
+    return { title: "Service not found" };
+  }
+
+  const description = service.excerpt || undefined;
+  const url = `${SITE_URL}/services/${service.slug}`;
+
+  return {
+    title: service.title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      title: service.title,
+      description,
+      url,
+      images: service.coverImage ? [{ url: service.coverImage }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: service.title,
+      description,
+      images: service.coverImage ? [service.coverImage] : undefined,
+    },
+  };
+}
+
+export default async function ServiceDetail({ params }) {
+  const { service: slug } = await params;
+  const service = await getServiceBySlug(slug);
+
+  if (!service) {
+    notFound();
+  }
+
+  const url = `${SITE_URL}/services/${service.slug}`;
+
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.excerpt,
+    provider: { "@type": "Organization", name: "GreyArc" },
+    areaServed: "IN",
+    url,
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <ViewTracker slug={service.slug} />
       <div className="min-h-screen flex justify-center">
         <article className="max-w-4xl w-full px-4 py-16 mt-12">
           {/* Cover Image */}
           <div className="rounded-xl overflow-hidden mb-8">
-            {blog?.coverImage ? (
+            {service.coverImage ? (
               <img
-                src={blog?.coverImage}
-                alt={blog?.title}
+                src={service.coverImage}
+                alt={service.title}
                 width={1920}
                 height={1080}
                 className="w-full h-auto object-cover"
@@ -54,11 +106,11 @@ export default function BlogPost({ params }) {
 
           {/* Title */}
           <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 leading-tight mb-3">
-            {blog?.title}
+            {service.title}
           </h1>
 
           {/* Content */}
-          <BlogContent content={blog?.content} />
+          <BlogContent content={service.content} />
         </article>
       </div>
       <Footer />

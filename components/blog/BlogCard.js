@@ -1,27 +1,7 @@
-"use client";
-
 import { Calendar, Clock } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function BlogCard({ data, read }) {
-  const router = useRouter();
-
-  const handleView = async (slug, id) => {
-    try {
-      const res = await fetch(`/api/encrypt?id=${id}`);
-      const data = await res.json();
-
-      if (!data.encryptedId) {
-        console.error("EC failure");
-        return;
-      }
-
-      router.push(`/blogs/${slug}?ref=${encodeURIComponent(data.encryptedId)}`);
-    } catch (err) {
-      console.error("We are facing some issues, please try later");
-    }
-  };
-
   return (
     <div className="@container">
       <div className="max-w-6xl rounded-3xl bg-gray-50 flex flex-col-reverse @md:flex md:flex-row gap-6 @md:gap-10 p-6 sm:p-8 @md:p-12 hover:shadow-md transition-all duration-300">
@@ -64,8 +44,8 @@ export default function BlogCard({ data, read }) {
 
             {/* Button */}
             <div className="flex mt-4">
-              <button
-                onClick={() => handleView(data.slug, data._id)}
+              <Link
+                href={`/blogs/${data.slug}`}
                 className="
                 cursor-pointer 
                 group flex items-center gap-2 
@@ -79,7 +59,7 @@ export default function BlogCard({ data, read }) {
               "
               >
                 <span>Read Now</span>
-              </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
-"use client";
-import { useState, useEffect } from "react";
+import connectDB from "@/lib/mongoose";
+import PageSection from "@/app/models/PageSection";
 import HeroSection from "@/components/home/HeroSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import MissionSection from "@/components/home/MissionSection";
@@ -10,95 +10,61 @@ import Results from "@/components/home/Results";
 import ClientStories from "@/components/home/ClientStories";
 import CredentialsExpertise from "@/components/home/CredentialsExpertise";
 import ContactFormSection from "@/components/home/ContactFormSection";
-// import ConsultationProcess from "@/components/home/ConsultationProcess";
 import Footer from "@/components/home/Footer";
-import Loading from "@/components/loading/loading";
 import FaqSection from "@/components/home/FaqSection";
+import HashScrollHandler from "@/components/home/HashScrollHandler";
 
-export default function HomeSectionsEditor() {
-  const [loading, setLoading] = useState(true);
-  const [sections, setSections] = useState([
-    {
-      page_name: "",
-      section_name: "",
-      section_heading: "",
-      section_description: "",
-      section_image: "",
-      section_list: [
-        {
-          list_item_header: "0",
-          list_item_description: "Loading",
-          list_item_image: "",
-          list_item_svg: "",
-        },
-      ],
-    },
-  ]);
-  const sectionComponents = {
-    home: HeroSection,
-    services: ServicesSection,
-    mission: MissionSection,
-    about: MeetTheTeam,
-    team_skills: TeamSkills,
-    cta: CallToAction,
-    results: Results,
-    client_stories: ClientStories,
-    credentials: CredentialsExpertise,
-    contact: ContactFormSection,
-    faq: FaqSection,
-  };
+// Content is CMS-driven (MongoDB) independently of code deploys, so this
+// renders per-request rather than being statically generated at build
+// time — keeps it fresh and doesn't require DB access during the build.
+export const dynamic = "force-dynamic";
 
-  async function loadData() {
-    try {
-      const res = await fetch("/api/dataAllget");
-      const fetchedData = await res.json();
-      console.log("Fetched Data:", fetchedData);
-      setSections(fetchedData);
-    } catch (error) {
-      console.error("Error fetching sections");
-    } finally {
-      setLoading(false);
-    }
-  }
+export const metadata = {
+  title: "GreyArc | Crop Protection & Agrochemical Consulting",
+  description:
+    "GreyArc is a specialist growth and operations partner for crop protection manufacturers, covering operations & S&OP, manufacturing & warehousing, offshore structuring & export enablement, and toll manufacturing.",
+  alternates: { canonical: "https://www.greyarc.co/" },
+};
 
-  useEffect(() => {
-    loadData();
-  }, []);
+const sectionComponents = {
+  home: HeroSection,
+  services: ServicesSection,
+  mission: MissionSection,
+  about: MeetTheTeam,
+  team_skills: TeamSkills,
+  cta: CallToAction,
+  results: Results,
+  client_stories: ClientStories,
+  credentials: CredentialsExpertise,
+  contact: ContactFormSection,
+  faq: FaqSection,
+};
 
-  useEffect(() => {
-    if (!loading) {
-      // Run only after sections are loaded
-      const hash = window.location.hash;
-      if (hash) {
-        const id = hash.replace("#", "");
-        const el = document.getElementById(id);
+async function getSections() {
+  await connectDB();
+  // Matches the original /api/dataAllget route's query exactly.
+  const sections = await PageSection.find({})
+    .sort({ section_sequence: 1 })
+    .lean();
 
-        if (el) {
-          // Delay ensures DOM is fully rendered
-          setTimeout(() => {
-            const yOffset = -80; // adjust if navbar height differs
-            const y =
-              el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+  // Several section components below are Client Components. Next.js
+  // requires props crossing the Server -> Client boundary to be plain,
+  // JSON-serializable values — Mongoose's lean() still leaves ObjectId
+  // and Date instances in place, which would throw at render time.
+  return JSON.parse(JSON.stringify(sections));
+}
 
-            window.scrollTo({ top: y, behavior: "smooth" });
-          }, 100);
-        }
-      }
-    }
-  }, [loading]);
-
-  if (loading) {
-    return <Loading />;
-  }
+export default async function HomePage() {
+  const sections = await getSections();
 
   return (
     <>
+      <HashScrollHandler />
       {sections.map((section) => {
         const SectionComponent = sectionComponents[section.section_name];
-        if (!SectionComponent) return null; // skip unknown sections
+        if (!SectionComponent) return null;
         return <SectionComponent key={section._id} data={section} />;
       })}
-      {/*<ConsultationProcess />*/}
       <Footer />
     </>
   );

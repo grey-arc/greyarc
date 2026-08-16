@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Mail, Phone, MapPin, Linkedin, ArrowRight } from "lucide-react";
 
