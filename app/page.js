@@ -28,7 +28,7 @@ export const metadata = {
 
 const sectionComponents = {
   home: HeroSection,
-  services: ServicesSection,
+  SERVICES: ServicesSection,
   mission: MissionSection,
   about: MeetTheTeam,
   team_skills: TeamSkills,

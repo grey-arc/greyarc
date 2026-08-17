@@ -34,7 +34,11 @@ export default function BlogCard({ data, read }) {
             <div className="flex flex-wrap gap-4 sm:gap-6">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>{data.publishedAt?.split("T")[0]}</span>
+                <span>
+                  {data.publishedAt
+                    ? new Date(data.publishedAt).toISOString().split("T")[0]
+                    : ""}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
