@@ -38,26 +38,11 @@ export default function Footer() {
           <h3 className="text-white font-medium mb-4">Services</h3>
           <ul className="space-y-3 text-sm text-gray-400">
             {[
-              {
-                name: "Inventory Optimization",
-                link: "/services/inventory?ref=47446ffb95c010cb4a92d70ca1c708e9%3Ac3321fd546f0444d54b3c061b8bebc03a0d0f7598beb1f2a3028e0b5b25ad93c",
-              },
-              {
-                name: "Manufacturing",
-                link: "/services/manufacturing?ref=7b342ff7deb9f63dacde6c4a4e5ae746%3Ad2e74767f08074a03f475bdf3598a1cc80649c3fcbebeb3352abbef1ee835863",
-              },
-              {
-                name: "Logistics & Distribution",
-                link: "/services/logistics?ref=c9f626b83247c898ff3e12e93a05ab48%3Ac9525e2f5134f9ca2f847666f9729643126591605a5dd7a10aa56d9bbf8fde11",
-              },
-              {
-                name: "ERP Implementation",
-                link: "/services/erp?ref=2142aadc7c8fa8a9b2d0f991287adf10%3A74d5ddfc383437fca1f8ca30231c5ed81cb66f03d3cdc38acb5b66c4c2900990",
-              },
-              {
-                name: "Sales & Customer Experience",
-                link: "/services/sales?ref=d94a8cddd7c07b1257817e77c6fdc893%3Aca1bca960573efa5900d473d2bc53d3a8d8c41f95c77c4a81152e41fd18c59fc",
-              },
+              { name: "Inventory Optimization", link: "/services/inventory" },
+              { name: "Manufacturing", link: "/services/manufacturing" },
+              { name: "Logistics & Distribution", link: "/services/logistics" },
+              { name: "ERP Implementation", link: "/services/erp" },
+              { name: "Sales & Customer Experience", link: "/services/sales" },
             ].map((service) => (
               <li
                 key={service.name}

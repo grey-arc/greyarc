@@ -136,3 +136,24 @@
 * {
   scrollbar-color: #0f567b transparent;
 }
+
+/* Blog/service article content list styling
+   (moved from BlogContent.js's styled-jsx, which required a Client
+   Component and broke server rendering of article content) */
+.blog-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+.blog-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+.blog-content li {
+  margin: 0.5rem 0;
+}
+.blog-content li p {
+  margin: 0;
+  display: inline;
+}

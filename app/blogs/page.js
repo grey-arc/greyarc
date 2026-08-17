@@ -1,23 +1,42 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import connectDB from "@/lib/mongoose";
+import Blog from "@/app/models/Blog";
 import BlogCard from "@/components/blog/BlogCard";
-import Loading from "@/components/loading/loading";
 
-export default function BlogPage() {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+export const dynamic = "force-dynamic";
 
-  useEffect(() => {
-    fetch("/api/blogs/fetchAll")
-      .then((res) => res.json())
-      .then((data) => setBlogs(data))
-      .then(() => setLoading(false));
-  }, []);
+export const metadata = {
+  title: "Blog",
+  description:
+    "Insights on crop protection operations, agrochemical supply chains, manufacturing, and export enablement from the GreyArc team.",
+  alternates: { canonical: "https://www.greyarc.co/blogs" },
+};
 
-  if (loading) {
-    return <Loading />;
-  }
+function estimateReadTime(htmlContent) {
+  if (!htmlContent) return 1;
+  const text = htmlContent.replace(/<[^>]*>/g, " ");
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+async function getBlogs() {
+  await connectDB();
+  // Matches the original /api/blogs/fetchAll route's filter (the route
+  // the public blog listing page actually called): active + published.
+  // author exclusion added defensively — currently a no-op since all
+  // "services" records are published: false, but prevents a service
+  // record from ever appearing in the blog list if that changes.
+  const blogs = await Blog.find({
+    active: true,
+    published: true,
+    author: { $ne: "services" },
+  })
+    .sort({ createdAt: -1 })
+    .lean();
+  return blogs;
+}
+
+export default async function BlogPage() {
+  const blogs = await getBlogs();
 
   return (
     <div className="min-h-screen bg-gray-100 py-20 px-6 md:px-12">
@@ -30,10 +49,13 @@ export default function BlogPage() {
 
       {/* Blog Cards */}
       <div className="max-w-6xl mx-auto space-y-12">
-        {blogs.map((post) => {
-          let randomNo = Math.floor(Math.random() * 10) + 7;
-          return <BlogCard key={post._id} data={post} read={randomNo} />;
-        })}
+        {blogs.map((post) => (
+          <BlogCard
+            key={post._id}
+            data={post}
+            read={estimateReadTime(post.content)}
+          />
+        ))}
       </div>
     </div>
   );
