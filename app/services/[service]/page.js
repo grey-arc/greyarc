@@ -9,6 +9,22 @@ const SITE_URL = "https://www.greyarc.co";
 
 export const dynamic = "force-dynamic";
 
+// NOTE: Blog.excerpt is repurposed on service records as an icon lookup
+// key (e.g. "Factory", "Package", "Truck" — see app/services/page.js's
+// icon map), not a text description. Meta descriptions and JSON-LD here
+// must be derived from `content` instead, or they'd literally show the
+// icon name as the page description.
+function extractDescription(htmlContent, maxLength = 160) {
+  if (!htmlContent) return undefined;
+  const text = htmlContent
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!text) return undefined;
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).replace(/\s+\S*$/, "") + "…";
+}
+
 async function getServiceBySlug(slug) {
   await connectDB();
   // Matches the original /api/services route's filter exactly: author
@@ -30,7 +46,7 @@ export async function generateMetadata({ params }) {
     return { title: "Service not found" };
   }
 
-  const description = service.excerpt || undefined;
+  const description = extractDescription(service.content);
   const url = `${SITE_URL}/services/${service.slug}`;
 
   return {
@@ -67,7 +83,7 @@ export default async function ServiceDetail({ params }) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: service.title,
-    description: service.excerpt,
+    description: extractDescription(service.content),
     provider: { "@type": "Organization", name: "GreyArc" },
     areaServed: "IN",
     url,
