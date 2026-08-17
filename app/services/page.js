@@ -1,6 +1,6 @@
 import connectDB from "@/lib/mongoose";
 import Blog from "@/app/models/Blog";
-import { Factory } from "lucide-react";
+import { Factory, TrendingUp, Warehouse, Ship, Handshake } from "lucide-react";
 import Link from "next/link";
 import Footer from "@/components/home/Footer";
 import Package from "@/public/images/chart-network.png";
@@ -18,7 +18,7 @@ export const metadata = {
   alternates: { canonical: "https://www.greyarc.co/services" },
 };
 
-const icons = { Factory, Package, Truck, Database, Users };
+const icons = { Factory, Package, Truck, Database, Users, TrendingUp, Warehouse, Ship, Handshake };
 
 async function getServices() {
   await connectDB();
