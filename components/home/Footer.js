@@ -83,15 +83,20 @@ export default function Footer() {
           <p>© 2024 GreyArc Consulting. All rights reserved.</p>
 
           <div className="flex items-center space-x-4">
-            <Link href="#" className="hover:text-white">
+            <a
+              href="https://in.linkedin.com/company/greyarcco"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
+            >
               LinkedIn
-            </Link>
+            </a>
             <span className="hidden md:block text-gray-600">|</span>
-            <Link href="#" className="hover:text-white">
+            <Link href="/privacy-policy" className="hover:text-white">
               Privacy Policy
             </Link>
             <span className="hidden md:block text-gray-600">|</span>
-            <Link href="#" className="hover:text-white">
+            <Link href="/terms-and-conditions" className="hover:text-white">
               Terms & Conditions
             </Link>
           </div>

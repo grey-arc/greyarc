@@ -17,6 +17,8 @@ export default async function sitemap() {
     { url: `${SITE_URL}/`, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE_URL}/services`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/blogs`, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${SITE_URL}/privacy-policy`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/terms-and-conditions`, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   // Services are stored as Blog documents with author: "services".
