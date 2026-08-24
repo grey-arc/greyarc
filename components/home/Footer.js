@@ -20,7 +20,7 @@ export default function Footer() {
           <div className="space-y-3 text-sm">
             <div className="flex items-center gap-2">
               <Mail size={16} className="text-gray-400" />
-              <a href="mailto:info@vanrao.com" className="hover:text-white">
+              <a href="mailto:info@greyarc.co" className="hover:text-white">
                 info@greyarc.co
               </a>
             </div>
