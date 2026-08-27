@@ -27,6 +27,7 @@ export default function BlogEditorForm({ blog = {}, onClose }) {
     coverImage: "",
     tags: [],
     published: false,
+    author: blog.author || "",
   });
   const [service, setService] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
@@ -43,7 +44,14 @@ export default function BlogEditorForm({ blog = {}, onClose }) {
         coverImage: blog.coverImage || "",
         tags: blog.tags || [],
         published: blog.published || false,
+        author: blog.author || "",
       });
+    } else if (blog?.author) {
+      // Creating a brand-new record seeded with an author hint (e.g. the
+      // "+ Add Service" flow passes blog={{ author: "services" }}) — carry
+      // that through so the new record actually saves as a service instead
+      // of silently defaulting to a regular blog post (see handleSubmit).
+      setForm((f) => ({ ...f, author: blog.author }));
     }
 
     blog.author === "services" ? setService(true) : null;
@@ -69,10 +77,19 @@ export default function BlogEditorForm({ blog = {}, onClose }) {
   const handleSubmit = async () => {
     const method = blog._id ? "PUT" : "POST";
     const url = blog._id ? `/api/blogs/${blog._id}` : "/api/blogs";
+    // /api/blogs' update path ignores `author` entirely (an existing
+    // record's author never changes here), but its create path uses the
+    // body as-is — sending author: "" on a *new* record would stick as a
+    // literal empty string instead of falling back to the schema's
+    // "Admin" default (Mongoose only applies defaults for undefined
+    // fields). Regular "New Blog" creation never sets an author hint, so
+    // this only matters for that case — omit the key when it's empty.
+    const payload = { ...form };
+    if (!payload.author) delete payload.author;
     await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(payload),
     });
     service
       ? toast.success("Service saved successfully!")
@@ -98,34 +115,60 @@ export default function BlogEditorForm({ blog = {}, onClose }) {
       </div>
 
       {/* Slug */}
-      {service ? null : (
-        <div>
-          <Label className="mb-2 text-md text-gray-500">
-            <Link2 className="w-5 h-5" />
-            Slug
-          </Label>
-          <Input
-            placeholder="my-first-blog-post"
-            value={form.slug}
-            onChange={(e) => setForm({ ...form, slug: e.target.value })}
-          />
-        </div>
-      )}
+      {/* Previously hidden entirely for services (`service ? null : ...`),
+          which meant a service's URL couldn't be seen or edited from this
+          form at all — editing a service's title/content while its slug
+          silently stayed pointed at the old URL is how /services/sales,
+          /services/logistics, /services/inventory, and /services/erp ended
+          up rendering unrelated content (see the Aug 2026 site audit).
+          Shown for services too now, just relabeled since for a service
+          this *is* the live URL, not a blog-style slug. */}
+      <div>
+        <Label className="mb-2 text-md text-gray-500">
+          <Link2 className="w-5 h-5" />
+          {service ? "URL (greyarc.co/services/…)" : "Slug"}
+        </Label>
+        <Input
+          placeholder={service ? "inventory" : "my-first-blog-post"}
+          value={form.slug}
+          onChange={(e) => setForm({ ...form, slug: e.target.value })}
+        />
+        {service && (
+          <p className="text-xs text-gray-500 mt-1">
+            This is the exact path segment after /services/ — changing it
+            changes the page&rsquo;s live URL. Double-check it matches this
+            service&rsquo;s title/content before saving.
+          </p>
+        )}
+      </div>
 
       {/* Excerpt */}
-      {service ? null : (
-        <div>
-          <Label className="mb-2 text-md text-gray-500">
-            <StickyNote className="w-5 h-5" />
-            Excerpt
-          </Label>
-          <Input
-            placeholder="A brief summary of the blog post"
-            value={form.excerpt}
-            onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
-          />
-        </div>
-      )}
+      {/* Also previously hidden for services, despite being repurposed on
+          service records as the icon lookup key for the /services grid
+          (see app/services/page.js's `icons` map) — meaning a service's
+          icon couldn't be seen or changed here either. */}
+      <div>
+        <Label className="mb-2 text-md text-gray-500">
+          <StickyNote className="w-5 h-5" />
+          {service ? "Icon" : "Excerpt"}
+        </Label>
+        <Input
+          placeholder={
+            service
+              ? "Factory, Package, Truck, Database, Users, TrendingUp, Warehouse, Ship, or Handshake"
+              : "A brief summary of the blog post"
+          }
+          value={form.excerpt}
+          onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
+        />
+        {service && (
+          <p className="text-xs text-gray-500 mt-1">
+            Must exactly match one of: Factory, Package, Truck, Database,
+            Users, TrendingUp, Warehouse, Ship, Handshake — any other value
+            renders no icon on the Services page.
+          </p>
+        )}
+      </div>
 
       {/* Tags */}
       {service ? null : (
