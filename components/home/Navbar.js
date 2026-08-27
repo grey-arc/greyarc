@@ -16,12 +16,23 @@ export default function Navbar() {
     try {
       const res = await fetch("/api/getNavLinks");
       const data = await res.json();
+      // Sections that now have a dedicated, indexable page (see the Aug
+      // 2026 site audit) route there instead of to a homepage anchor.
+      // Anything not listed here still falls back to scrolling the
+      // homepage, unchanged from before.
+      const dedicatedPages = {
+        about: "/about",
+        results: "/success-stories",
+        client_stories: "/success-stories",
+        credentials: "/credentials",
+        contact: "/contact",
+      };
       const updated = data?.map((item) => ({
         ...item,
         section_name:
           item.section_name === "SERVICES"
             ? "/services"
-            : `/#${item.section_name}`,
+            : dedicatedPages[item.section_name] || `/#${item.section_name}`,
       }));
       const finalData = [
         ...updated,
