@@ -19,6 +19,14 @@ export default async function sitemap() {
     { url: `${SITE_URL}/blogs`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/privacy-policy`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/terms-and-conditions`, changeFrequency: "yearly", priority: 0.3 },
+    // Previously only reachable as homepage anchors (#about, #results,
+    // #credentials, #contact) and absent from the sitemap — see the
+    // Aug 2026 site audit. Now standalone routes under app/about,
+    // app/success-stories, app/credentials, app/contact.
+    { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE_URL}/success-stories`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/credentials`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${SITE_URL}/contact`, changeFrequency: "monthly", priority: 0.5 },
   ];
 
   // Services are stored as Blog documents with author: "services".

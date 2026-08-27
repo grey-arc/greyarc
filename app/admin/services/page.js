@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Pencil } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import AdminNavbar from "@/components/a-nav/ANav";
 
@@ -39,6 +39,15 @@ export default function BlogListing() {
     <div className="px-8 space-y-6">
       <AdminNavbar />
       <div className="p-8 max-w-7xl mx-auto space-y-6">
+        <div className="flex justify-end">
+          <Button
+            onClick={() => router.push("/admin/services/new")}
+            className="cursor-pointer"
+          >
+            <Plus className="w-4 h-4 mr-1" />
+            Add Service
+          </Button>
+        </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {blogs.map((blog) => (
             <Card key={blog._id}>
