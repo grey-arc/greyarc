@@ -5,7 +5,7 @@ import BlogCard from "@/components/blog/BlogCard";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Blog",
+  title: "Agrochemical Supply Chain & Operations Blog",
   description:
     "Insights on crop protection operations, agrochemical supply chains, manufacturing, and export enablement from the GreyArc team.",
   alternates: { canonical: "https://www.greyarc.co/blogs" },

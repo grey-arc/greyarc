@@ -1,9 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import VisitTracker from "@/components/track/Tracker";
-import Navbar from "@/components/home/Navbar";
 import Script from "next/script";
 import PageLayout from "@/page-layout";
+import { SITE_URL, ORG, AREA_SERVED, KNOWS_ABOUT } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://www.greyarc.co";
 const SITE_DESCRIPTION =
   "GreyArc Consulting transforms the agrochemical, chemical, and manufacturing sectors through strategic, operational, and people excellence — helping businesses move from fragmented systems to data-driven, efficient, scalable operations.";
 
@@ -40,15 +39,35 @@ export const metadata = {
   },
 };
 
+// ProfessionalService (a subtype of Organization/LocalBusiness) so search
+// engines and AI assistants get the firm's address, markets served and
+// areas of expertise — not just a name and URL.
 const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "GreyArc",
+  "@type": "ProfessionalService",
+  "@id": `${SITE_URL}/#organization`,
+  name: ORG.name,
+  alternateName: "GreyArc",
+  legalName: ORG.legalName,
   url: SITE_URL,
   logo: `${SITE_URL}/images/logo.png`,
+  image: `${SITE_URL}/images/logo.png`,
   description: SITE_DESCRIPTION,
-  email: "info@greyarc.co",
-  telephone: "+91-9324799373",
+  email: ORG.email,
+  telephone: ORG.telephone,
+  address: { "@type": "PostalAddress", ...ORG.address },
+  areaServed: AREA_SERVED,
+  knowsAbout: KNOWS_ABOUT,
+  sameAs: [ORG.linkedin],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: "GreyArc",
+  publisher: { "@id": `${SITE_URL}/#organization` },
 };
 
 export default function RootLayout({ children }) {
@@ -62,6 +81,10 @@ export default function RootLayout({ children }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
 
         {/* Google tag (gtag.js) */}
@@ -80,7 +103,8 @@ export default function RootLayout({ children }) {
         </Script>
 
         <VisitTracker />
-        <Navbar />
+        {/* PageLayout renders the Navbar (hidden on /admin) — it was
+            previously rendered here too, duplicating the nav in the HTML. */}
         <PageLayout>{children}</PageLayout>
       </body>
     </html>

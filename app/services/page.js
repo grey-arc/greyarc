@@ -8,13 +8,14 @@ import Truck from "@/public/images/tool-case.png";
 import Database from "@/public/images/rotate.png";
 import Users from "@/public/images/users.png";
 import Image from "next/image";
+import { EXPERTISE_PAGES, MARKET_PAGES } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Services",
+  title: "Agrochemical Consulting Services",
   description:
-    "GreyArc's specialist consulting services for crop protection and agrochemical manufacturers: operations & S&OP, manufacturing & warehousing, offshore structuring & export enablement, and toll manufacturing partnerships.",
+    "Agrochemical consulting services for crop protection manufacturers and distributors in India, Southeast Asia, the Middle East and Europe: supply chain, S&OP, forecast accuracy, warehousing, manufacturing and export enablement.",
   alternates: { canonical: "https://www.greyarc.co/services" },
 };
 
@@ -64,12 +65,14 @@ export default async function ServicesPage() {
         {/* Header */}
         <div className="max-w-6xl mx-auto mb-16 text-center mt-10">
           <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-4">
-            Services
+            Agrochemical Consulting Services
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Explore our comprehensive supply chain consulting services designed
-            to optimize operations, reduce costs, and drive excellence across
-            industries.
+            Specialist supply chain and operations consulting built only for
+            crop protection and agrochemical manufacturers and distributors —
+            from S&amp;OP and forecast accuracy to warehousing, manufacturing
+            and export enablement, across India, Southeast Asia, the Middle
+            East and Europe.
           </p>
         </div>
 
@@ -87,6 +90,31 @@ export default async function ServicesPage() {
                 />
               );
             })}
+          </div>
+
+          {/* Keyword landing pages + markets — internal links */}
+          <div className="grid md:grid-cols-2 gap-8 mt-16">
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Core expertise</h2>
+              <ul className="space-y-2">
+                {EXPERTISE_PAGES.map((p) => (
+                  <li key={p.href}>
+                    <Link href={p.href} className="text-gray-700 underline underline-offset-4 hover:text-black">{p.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Markets we serve</h2>
+              <ul className="space-y-2">
+                <li className="text-gray-700">India (headquartered in Thane, Maharashtra)</li>
+                {MARKET_PAGES.map((p) => (
+                  <li key={p.href}>
+                    <Link href={p.href} className="text-gray-700 underline underline-offset-4 hover:text-black">{p.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

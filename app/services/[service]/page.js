@@ -4,8 +4,8 @@ import Blog from "@/app/models/Blog";
 import BlogContent from "@/components/blog/BlogContent";
 import ViewTracker from "@/components/blog/ViewTracker";
 import Footer from "@/components/home/Footer";
-
-const SITE_URL = "https://www.greyarc.co";
+import Link from "next/link";
+import { SITE_URL, AREA_SERVED, EXPERTISE_PAGES } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -84,9 +84,20 @@ export default async function ServiceDetail({ params }) {
     "@type": "Service",
     name: service.title,
     description: extractDescription(service.content),
-    provider: { "@type": "Organization", name: "GreyArc" },
-    areaServed: "IN",
+    provider: { "@id": `${SITE_URL}/#organization` },
+    areaServed: AREA_SERVED,
+    serviceType: "Agrochemical operations consulting",
     url,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/services` },
+      { "@type": "ListItem", position: 3, name: service.title, item: url },
+    ],
   };
 
   return (
@@ -94,6 +105,10 @@ export default async function ServiceDetail({ params }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <ViewTracker slug={service.slug} />
       <div className="min-h-screen flex justify-center">
@@ -127,6 +142,25 @@ export default async function ServiceDetail({ params }) {
 
           {/* Content */}
           <BlogContent content={service.content} />
+
+          {/* Internal links to the keyword landing pages */}
+          <nav aria-label="Related expertise" className="mt-12 border-t border-gray-200 pt-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Related expertise</h2>
+            <ul className="grid sm:grid-cols-2 gap-3">
+              {EXPERTISE_PAGES.map((p) => (
+                <li key={p.href}>
+                  <Link href={p.href} className="text-gray-700 underline underline-offset-4 hover:text-black">
+                    {p.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6">
+              <Link href="/contact" className="inline-block rounded-full bg-[#131921] text-white px-6 py-3 text-sm font-medium hover:bg-black">
+                Book a 30-minute conversation
+              </Link>
+            </p>
+          </nav>
         </article>
       </div>
       <Footer />

@@ -9,7 +9,7 @@ import Footer from "@/components/home/Footer";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Credentials & Expertise | GreyArc",
+  title: "Credentials & Expertise",
   description:
     "GreyArc's founding team credentials: IIM Kozhikode and NIT Jamshedpur education, professional experience at Bayer CropScience, Cipla, Aventis, and Hoechst, and specializations spanning SAP MM/WM, S&OP design, and demand planning.",
   alternates: { canonical: "https://www.greyarc.co/credentials" },

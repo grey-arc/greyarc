@@ -10,7 +10,7 @@ import Footer from "@/components/home/Footer";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Contact GreyArc | Agrochemical Operations Consulting",
+  title: { absolute: "Contact GreyArc | Agrochemical Operations Consulting" },
   description:
     "Get in touch with GreyArc for agrochemical and crop protection operations consulting — warehousing, S&OP, manufacturing, export enablement, and toll manufacturing partner sourcing.",
   alternates: { canonical: "https://www.greyarc.co/contact" },

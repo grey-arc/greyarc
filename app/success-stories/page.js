@@ -12,7 +12,7 @@ import Footer from "@/components/home/Footer";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Success Stories | GreyArc Client Results",
+  title: "Success Stories — Agrochemical Supply Chain Results",
   description:
     "Quantified results from GreyArc engagements with Indian agrochemical and crop protection manufacturers and distributors — stockout reduction, forecast accuracy, order fulfilment, and dispatch visibility improvements.",
   alternates: { canonical: "https://www.greyarc.co/success-stories" },
