@@ -2,7 +2,7 @@
 
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
-import { EXPERTISE_PAGES, MARKET_PAGES } from "@/lib/site";
+import { EXPERTISE_PAGES, MARKET_PAGES, ORG } from "@/lib/site";
 
 export default function Footer() {
   return (
@@ -27,8 +27,8 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-2">
               <Phone size={16} className="text-gray-400" />
-              <a href="tel:+919324799373" className="hover:text-white">
-                +91 9324799373
+              <a href={ORG.telephoneHref} className="hover:text-white">
+                {ORG.telephoneDisplay}
               </a>
             </div>
           </div>
