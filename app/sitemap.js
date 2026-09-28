@@ -1,7 +1,6 @@
 import connectDB from "@/lib/mongoose";
 import Blog from "@/app/models/Blog";
-
-const SITE_URL = "https://www.greyarc.co";
+import { SITE_URL, EXPERTISE_PAGES, MARKET_PAGES } from "@/lib/site";
 
 // Content here comes from the CMS (MongoDB), which changes independently
 // of code deploys. Force this to run at request time rather than build
@@ -27,6 +26,17 @@ export default async function sitemap() {
     { url: `${SITE_URL}/success-stories`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/credentials`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE_URL}/contact`, changeFrequency: "monthly", priority: 0.5 },
+    // Code-managed keyword landing pages (Sep 2026 visibility push).
+    ...EXPERTISE_PAGES.map((p) => ({
+      url: `${SITE_URL}${p.href}`,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    })),
+    ...MARKET_PAGES.map((p) => ({
+      url: `${SITE_URL}${p.href}`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    })),
   ];
 
   // Services are stored as Blog documents with author: "services".

@@ -2,11 +2,12 @@
 
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
+import { EXPERTISE_PAGES, MARKET_PAGES } from "@/lib/site";
 
 export default function Footer() {
   return (
     <footer className="bg-[#131921] text-gray-300 rounded-t-3xl mt-16">
-      <div className="max-w-7xl md:max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-12">
+      <div className="max-w-7xl md:max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-12">
         {/* Left Section */}
         <div>
           <h2 className="text-3xl font-semibold text-white mb-4">GreyArc</h2>
@@ -33,22 +34,31 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Middle Section - Services */}
+        {/* Expertise — keyword landing pages (replaces the old hard-coded
+            service list, which linked "ERP Implementation" to the GRACE
+            framework page) */}
         <div>
-          <h3 className="text-white font-medium mb-4">Services</h3>
+          <h3 className="text-white font-medium mb-4">Expertise</h3>
           <ul className="space-y-3 text-sm text-gray-400">
-            {[
-              { name: "Inventory Optimization", link: "/services/inventory" },
-              { name: "Manufacturing", link: "/services/manufacturing" },
-              { name: "Logistics & Distribution", link: "/services/logistics" },
-              { name: "ERP Implementation", link: "/services/erp" },
-              { name: "Sales & Customer Experience", link: "/services/sales" },
-            ].map((service) => (
-              <li
-                key={service.name}
-                className="hover:text-white cursor-pointer"
-              >
-                <Link href={service.link}>{service.name}</Link>
+            {EXPERTISE_PAGES.map((p) => (
+              <li key={p.href} className="hover:text-white">
+                <Link href={p.href}>{p.label}</Link>
+              </li>
+            ))}
+            <li className="hover:text-white">
+              <Link href="/services">All services</Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Markets */}
+        <div>
+          <h3 className="text-white font-medium mb-4">Markets</h3>
+          <ul className="space-y-3 text-sm text-gray-400">
+            <li>India</li>
+            {MARKET_PAGES.map((p) => (
+              <li key={p.href} className="hover:text-white">
+                <Link href={p.href}>{p.label}</Link>
               </li>
             ))}
           </ul>
@@ -80,7 +90,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="bg-gray-800 py-4 px-6 rounded-t-3xl">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-sm text-gray-500 space-y-3 md:space-y-0">
-          <p>© 2024 GreyArc Consulting. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} GreyArc Consulting. All rights reserved.</p>
 
           <div className="flex items-center space-x-4">
             <a
