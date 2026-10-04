@@ -29,6 +29,9 @@ export default async function AboutPage() {
   return (
     <>
       <div className="pt-24">
+        <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 text-center mt-10 mb-8 px-4">
+          About GreyArc: Agrochemical Operations Consultants
+        </h1>
         <MeetTheTeam data={section} />
       </div>
       <Footer />
