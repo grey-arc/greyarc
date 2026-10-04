@@ -37,7 +37,7 @@ export default async function SuccessStoriesPage() {
     <>
       <div className="pt-24 mb-8">
         <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 text-center mt-10">
-          Success Stories
+          Agrochemical Consulting Case Studies &amp; Results
         </h1>
       </div>
       {results && <Results data={results} />}

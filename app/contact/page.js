@@ -28,6 +28,9 @@ export default async function ContactPage() {
   return (
     <>
       <div className="pt-24">
+        <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 text-center mt-10 mb-8 px-4">
+          Contact GreyArc's Agrochemical Consultants
+        </h1>
         <ContactFormSection data={section} />
       </div>
       <Footer />
