@@ -13,9 +13,9 @@ import { EXPERTISE_PAGES, MARKET_PAGES } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Agrochemical Consulting Services",
+  title: { absolute: "Agrochemical Consulting Services | All Practices – GreyArc" },
   description:
-    "Agrochemical consulting services for crop protection manufacturers and distributors in India, Southeast Asia, the Middle East and Europe: supply chain, S&OP, forecast accuracy, warehousing, manufacturing and export enablement.",
+    "Supply chain, S&OP, warehousing, manufacturing, toll sourcing, export and sales consulting built only for agrochemical companies. See all services.",
   alternates: { canonical: "https://www.greyarc.co/services" },
 };
 

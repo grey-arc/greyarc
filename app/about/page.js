@@ -11,9 +11,9 @@ import Footer from "@/components/home/Footer";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: { absolute: "About GreyArc | Agrochemical Operations Consulting Team" },
+  title: { absolute: "About GreyArc – Agrochemical Consultants & GRACE Framework" },
   description:
-    "Meet the GreyArc team: specialist agrochemical and crop protection operations consultants with 100+ years of combined experience across Bayer CropScience, Cipla, Aventis, and Hoechst.",
+    "Founded by ex-Bayer CropScience, Aventis and Cipla leaders with 110+ years in agrochemicals. Meet the team and our GRACE method.",
   alternates: { canonical: "https://www.greyarc.co/about" },
 };
 

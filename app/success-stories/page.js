@@ -12,9 +12,9 @@ import Footer from "@/components/home/Footer";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Success Stories — Agrochemical Supply Chain Results",
+  title: { absolute: "Agrochemical Consulting Case Studies | Results – GreyArc" },
   description:
-    "Quantified results from GreyArc engagements with Indian agrochemical and crop protection manufacturers and distributors — stockout reduction, forecast accuracy, order fulfilment, and dispatch visibility improvements.",
+    "Real results from agrochemical manufacturers and distributors: 40% fewer stockouts, +25% forecast accuracy, 45% better order fulfilment.",
   alternates: { canonical: "https://www.greyarc.co/success-stories" },
 };
 
