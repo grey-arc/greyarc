@@ -6,6 +6,7 @@ import ViewTracker from "@/components/blog/ViewTracker";
 import Footer from "@/components/home/Footer";
 import Link from "next/link";
 import { SITE_URL, AREA_SERVED, EXPERTISE_PAGES } from "@/lib/site";
+import { SERVICE_SEO, SERVICE_RELATED } from "@/lib/seo-overrides";
 
 export const dynamic = "force-dynamic";
 
@@ -46,23 +47,28 @@ export async function generateMetadata({ params }) {
     return { title: "Service not found" };
   }
 
-  const description = extractDescription(service.content);
+  const seo = SERVICE_SEO[service.slug];
+  const description = seo?.description ?? extractDescription(service.content);
   const url = `${SITE_URL}/services/${service.slug}`;
+  // Override titles are complete (they carry their own brand suffix where
+  // it fits in 60 chars), so they bypass the layout's "%s | GreyArc" template.
+  const title = seo?.title ? { absolute: seo.title } : service.title;
+  const socialTitle = seo?.title ?? service.title;
 
   return {
-    title: service.title,
+    title,
     description,
     alternates: { canonical: url },
     openGraph: {
       type: "website",
-      title: service.title,
+      title: socialTitle,
       description,
       url,
       images: service.coverImage ? [{ url: service.coverImage }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: service.title,
+      title: socialTitle,
       description,
       images: service.coverImage ? [service.coverImage] : undefined,
     },
@@ -78,12 +84,15 @@ export default async function ServiceDetail({ params }) {
   }
 
   const url = `${SITE_URL}/services/${service.slug}`;
+  const seo = SERVICE_SEO[service.slug];
+  const heading = seo?.h1 ?? service.title;
+  const related = SERVICE_RELATED[service.slug];
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: service.title,
-    description: extractDescription(service.content),
+    name: heading,
+    description: seo?.description ?? extractDescription(service.content),
     provider: { "@id": `${SITE_URL}/#organization` },
     areaServed: AREA_SERVED,
     serviceType: "Agrochemical operations consulting",
@@ -96,7 +105,7 @@ export default async function ServiceDetail({ params }) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
       { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/services` },
-      { "@type": "ListItem", position: 3, name: service.title, item: url },
+      { "@type": "ListItem", position: 3, name: heading, item: url },
     ],
   };
 
@@ -137,11 +146,20 @@ export default async function ServiceDetail({ params }) {
 
           {/* Title */}
           <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 leading-tight mb-3">
-            {service.title}
+            {heading}
           </h1>
 
           {/* Content */}
           <BlogContent content={service.content} />
+
+          {related && (
+            <p className="mt-8 text-gray-700">
+              Related:{" "}
+              <Link href={related.href} className="text-gray-700 underline underline-offset-4 hover:text-black">
+                {related.label}
+              </Link>
+            </p>
+          )}
 
           {/* Internal links to the keyword landing pages */}
           <nav aria-label="Related expertise" className="mt-12 border-t border-gray-200 pt-8">

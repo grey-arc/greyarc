@@ -24,9 +24,10 @@ export default function HeroSection({ data }) {
       {/* Left Side */}
       <div className="flex flex-col justify-center space-y-6 order-2 md:order-1">
         <div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 leading-tight">
+          {/* Only rendered on the homepage — this is its single H1. */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 leading-tight">
             {data.section_heading}
-          </h2>
+          </h1>
           <p className="text-gray-600 mt-4 mb-10 sm:mb-16 leading-relaxed text-sm sm:text-base">
             {data.section_description}
           </p>

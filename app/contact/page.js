@@ -10,9 +10,9 @@ import Footer from "@/components/home/Footer";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: { absolute: "Contact GreyArc | Agrochemical Operations Consulting" },
+  title: { absolute: "Contact GreyArc | Agrochemical Consultants, Thane–Mumbai" },
   description:
-    "Get in touch with GreyArc for agrochemical and crop protection operations consulting — warehousing, S&OP, manufacturing, export enablement, and toll manufacturing partner sourcing.",
+    "Talk to India's specialist agrochemical consultants. WeWork Zenia, Thane. Call +91 8356914504 or book a no-commitment 30-minute call.",
   alternates: { canonical: "https://www.greyarc.co/contact" },
 };
 

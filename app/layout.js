@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 const SITE_DESCRIPTION =
-  "GreyArc Consulting transforms the agrochemical, chemical, and manufacturing sectors through strategic, operational, and people excellence — helping businesses move from fragmented systems to data-driven, efficient, scalable operations.";
+  "Specialist agrochemical and crop protection consultants for manufacturers and traders in India: supply chain, S&OP, warehousing, manufacturing, toll sourcing, export and sales operations.";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),

@@ -20,13 +20,9 @@ import HashScrollHandler from "@/components/home/HashScrollHandler";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  // `absolute` so the layout's "%s | GreyArc" template isn't appended.
-  title: {
-    absolute:
-      "Agrochemical Consultants | Supply Chain & S&OP | GreyArc",
-  },
+  title: { absolute: "Agrochemical Consultants India | Crop Protection – GreyArc" },
   description:
-    "Specialist agrochemical consultants for crop protection manufacturers and distributors: supply chain consulting, S&OP, forecast accuracy, warehousing and manufacturing — India, Southeast Asia, Middle East and Europe.",
+    "Agrochemical & crop protection consultants for manufacturers and traders. Supply chain, plant, sales ops. 40% fewer stockouts. Book a 30-min call.",
   alternates: { canonical: "https://www.greyarc.co/" },
 };
 
