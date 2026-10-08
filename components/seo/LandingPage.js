@@ -7,11 +7,29 @@ import { SITE_URL, AREA_SERVED, EXPERTISE_PAGES, MARKET_PAGES } from "@/lib/site
 // structured data — is in the initial HTML.
 //
 // `page` shape: { path, eyebrow, h1, lede, stats?, sections[{h2, body[], bullets?}],
-//                 proof?[{label, result}], faqs?[{q, a}], serviceName, breadcrumb }
+//                 proof?[{label, result}], faqs?[{q, a}], serviceName, breadcrumb,
+//                 kind?: "service" | "article", relatedLinks?[{href, label, note?}] }
+// kind "article" (guides) emits Article schema instead of Service.
 export default function LandingPage({ page }) {
   const url = `${SITE_URL}${page.path}`;
 
-  const serviceJsonLd = {
+  const isArticle = page.kind === "article";
+
+  const serviceJsonLd = isArticle
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: page.h1,
+        description: page.lede,
+        about: page.serviceName,
+        author: { "@id": `${SITE_URL}/#organization` },
+        publisher: { "@id": `${SITE_URL}/#organization` },
+        datePublished: page.datePublished,
+        dateModified: page.dateModified || page.datePublished,
+        mainEntityOfPage: url,
+        url,
+      }
+    : {
     "@context": "https://schema.org",
     "@type": "Service",
     name: page.serviceName,
@@ -190,6 +208,25 @@ export default function LandingPage({ page }) {
               Contact GreyArc
             </Link>
           </section>
+
+          {/* Related services & reading — internal links to deeper pages */}
+          {page.relatedLinks?.length > 0 && (
+            <section aria-label="Related services and reading">
+              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
+                {isArticle ? "Related services and reading" : "Related services"}
+              </h2>
+              <ul className="grid sm:grid-cols-2 gap-4">
+                {page.relatedLinks.map((l) => (
+                  <li key={l.href} className="rounded-2xl border border-gray-200 p-5">
+                    <Link href={l.href} className="font-medium text-gray-900 underline underline-offset-4 hover:text-black">
+                      {l.label}
+                    </Link>
+                    {l.note && <p className="text-gray-600 mt-1 text-sm">{l.note}</p>}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {/* Related */}
           <nav aria-label="Related pages" className="border-t border-gray-200 pt-8">
