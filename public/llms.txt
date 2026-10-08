@@ -10,10 +10,14 @@ Key facts:
 
 ## Expertise
 - [Agrochemical supply chain consulting](https://www.greyarc.co/agrochemical-supply-chain-consulting)
-- [Agrochemical S&OP and planning](https://www.greyarc.co/agrochemical-sop)
+- [Agrochemical S&OP](https://www.greyarc.co/agrochemical-sop)
+- [Agrochemical planning](https://www.greyarc.co/agrochemical-planning)
 - [Agrochemical forecast accuracy improvement](https://www.greyarc.co/agrochemical-forecast-accuracy)
 - [Agrochemical warehousing solutions and depot consulting](https://www.greyarc.co/agrochemical-warehousing-consulting)
 - [All services](https://www.greyarc.co/services)
+
+## Guides
+- [The agrochemical supply chain: how it works and how to improve it](https://www.greyarc.co/agrochemical-supply-chain)
 
 ## Markets
 - [Southeast Asia](https://www.greyarc.co/markets/southeast-asia)

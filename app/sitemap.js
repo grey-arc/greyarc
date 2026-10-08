@@ -1,6 +1,6 @@
 import connectDB from "@/lib/mongoose";
 import Blog from "@/app/models/Blog";
-import { SITE_URL, EXPERTISE_PAGES, MARKET_PAGES } from "@/lib/site";
+import { SITE_URL, EXPERTISE_PAGES, MARKET_PAGES, GUIDE_PAGES } from "@/lib/site";
 
 // Content here comes from the CMS (MongoDB), which changes independently
 // of code deploys. Force this to run at request time rather than build
@@ -31,6 +31,11 @@ export default async function sitemap() {
       url: `${SITE_URL}${p.href}`,
       changeFrequency: "monthly",
       priority: 0.9,
+    })),
+    ...GUIDE_PAGES.map((p) => ({
+      url: `${SITE_URL}${p.href}`,
+      changeFrequency: "monthly",
+      priority: 0.8,
     })),
     ...MARKET_PAGES.map((p) => ({
       url: `${SITE_URL}${p.href}`,

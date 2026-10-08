@@ -2,7 +2,7 @@
 
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
-import { EXPERTISE_PAGES, MARKET_PAGES, ORG } from "@/lib/site";
+import { EXPERTISE_PAGES, MARKET_PAGES, GUIDE_PAGES, ORG } from "@/lib/site";
 
 export default function Footer() {
   return (
@@ -41,6 +41,11 @@ export default function Footer() {
           <h3 className="text-white font-medium mb-4">Expertise</h3>
           <ul className="space-y-3 text-sm text-gray-400">
             {EXPERTISE_PAGES.map((p) => (
+              <li key={p.href} className="hover:text-white">
+                <Link href={p.href}>{p.label}</Link>
+              </li>
+            ))}
+            {GUIDE_PAGES.map((p) => (
               <li key={p.href} className="hover:text-white">
                 <Link href={p.href}>{p.label}</Link>
               </li>
