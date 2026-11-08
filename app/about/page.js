@@ -2,6 +2,7 @@ import connectDB from "@/lib/mongoose";
 import PageSection from "@/app/models/PageSection";
 import MeetTheTeam from "@/components/home/MeetTheTeam";
 import Footer from "@/components/home/Footer";
+import Link from "next/link";
 
 // Same section is also rendered inline on the homepage (id="about") for the
 // one-page scroll experience. This route exists so the team/credibility
@@ -33,6 +34,17 @@ export default async function AboutPage() {
           About GreyArc: Agrochemical Operations Consultants
         </h1>
         <MeetTheTeam data={section} />
+        <p className="max-w-3xl mx-auto px-6 mt-8 text-center text-gray-700">
+          Looking for specialist help? See what our{" "}
+          <Link href="/agrochemical-consultants" className="underline underline-offset-4 hover:text-black">
+            agrochemical consultants
+          </Link>{" "}
+          work on, or read our{" "}
+          <Link href="/success-stories" className="underline underline-offset-4 hover:text-black">
+            client success stories
+          </Link>
+          .
+        </p>
       </div>
       <Footer />
     </>
